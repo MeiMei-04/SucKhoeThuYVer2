@@ -201,6 +201,7 @@ public class dsdvView extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        tbldsdv.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tbldsdv.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -219,17 +220,21 @@ public class dsdvView extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tbldsdv);
 
-        jLabel1.setText("ID");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setText("ID:");
 
         txtID.setEnabled(false);
 
-        jLabel2.setText("Danh Mục");
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setText("Danh Mục:");
 
         cbDanhMuc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel3.setText("Tên Động Vật");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel3.setText("Tên Động Vật:");
 
-        jLabel4.setText("Cân Nặng");
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel4.setText("Cân Nặng:");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ảnh"));
 
@@ -246,6 +251,8 @@ public class dsdvView extends javax.swing.JDialog {
                 .addComponent(lblAnh, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE))
         );
 
+        btnChonAnh.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnChonAnh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/picture.png"))); // NOI18N
         btnChonAnh.setText("Chọn Ảnh");
         btnChonAnh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -253,6 +260,8 @@ public class dsdvView extends javax.swing.JDialog {
             }
         });
 
+        btnThem.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnThem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Add.png"))); // NOI18N
         btnThem.setText("Thêm");
         btnThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -260,6 +269,8 @@ public class dsdvView extends javax.swing.JDialog {
             }
         });
 
+        btnSua.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnSua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Edit.png"))); // NOI18N
         btnSua.setText("Sửa");
         btnSua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -267,6 +278,8 @@ public class dsdvView extends javax.swing.JDialog {
             }
         });
 
+        btnXoa.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Delete.png"))); // NOI18N
         btnXoa.setText("Xoá");
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -274,6 +287,8 @@ public class dsdvView extends javax.swing.JDialog {
             }
         });
 
+        btnMoi.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnMoi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Refresh.png"))); // NOI18N
         btnMoi.setText("Mới");
         btnMoi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -292,15 +307,15 @@ public class dsdvView extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
-                        .addGap(35, 35, 35)
+                        .addGap(48, 48, 48)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtID)
-                            .addComponent(cbDanhMuc, 0, 249, Short.MAX_VALUE)))
+                            .addComponent(cbDanhMuc, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtID)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
+                        .addGap(25, 25, 25)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtTenDv)
                             .addComponent(txtCanNang)))
@@ -349,7 +364,7 @@ public class dsdvView extends javax.swing.JDialog {
                             .addComponent(btnSua)
                             .addComponent(btnXoa)
                             .addComponent(btnMoi))
-                        .addGap(0, 104, Short.MAX_VALUE))
+                        .addGap(0, 97, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
