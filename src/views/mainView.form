@@ -56,6 +56,7 @@
                               <Component id="dsdv" alignment="0" max="32767" attributes="0"/>
                               <Component id="dmdv" alignment="0" max="32767" attributes="0"/>
                               <Component id="ls" alignment="0" max="32767" attributes="0"/>
+                              <Component id="bctk" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -87,7 +88,9 @@
                           <Component id="dmdv" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="ls" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="104" max="32767" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="bctk" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="55" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -169,6 +172,20 @@
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblTrangChu">
+        </Component>
+        <Component class="javax.swing.JButton" name="bctk">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="12" style="1"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/bar-chart.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Th&#x1ed1;ng K&#xea;"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bctkActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

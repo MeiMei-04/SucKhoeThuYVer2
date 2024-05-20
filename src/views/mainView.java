@@ -50,6 +50,7 @@ public class mainView extends javax.swing.JFrame {
         ls = new javax.swing.JButton();
         lbllogo = new javax.swing.JLabel();
         lblTrangChu = new javax.swing.JLabel();
+        bctk = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -102,6 +103,15 @@ public class mainView extends javax.swing.JFrame {
             }
         });
 
+        bctk.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        bctk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bar-chart.png"))); // NOI18N
+        bctk.setText("Thống Kê");
+        bctk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bctkActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -115,7 +125,8 @@ public class mainView extends javax.swing.JFrame {
                             .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(dsdv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(dmdv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ls, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(ls, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bctk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(lbllogo, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -141,7 +152,9 @@ public class mainView extends javax.swing.JFrame {
                         .addComponent(dmdv)
                         .addGap(18, 18, 18)
                         .addComponent(ls)
-                        .addGap(0, 104, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(bctk)
+                        .addGap(0, 55, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -203,6 +216,16 @@ public class mainView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lbllogoMouseClicked
 
+    private void bctkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bctkActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            new tkView(this, true).setVisible(true);
+        } catch (Exception ex) {
+            
+        }
+    }//GEN-LAST:event_bctkActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -239,6 +262,7 @@ public class mainView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bctk;
     private javax.swing.JButton btnWeb;
     private javax.swing.JButton dmdv;
     private javax.swing.JButton dsdv;

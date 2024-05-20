@@ -52,6 +52,7 @@ public class danhsachdongvatDao {
         }
         return list;
     }
+
     public List<danhsachdongvat> getAllDataByTenDm(String tendm) {
         List<danhsachdongvat> list = new ArrayList<>();
         String sql = "Select danhsachdongvat.id,danhsachdongvat.id_danhmuc,danhmucdongvat.tendm,danhsachdongvat.tendv,danhsachdongvat.cannang,danhsachdongvat.anh from danhsachdongvat\n"
@@ -78,6 +79,7 @@ public class danhsachdongvatDao {
         }
         return list;
     }
+
     public void create(danhsachdongvat dsdv) {
         String sql = "INSERT INTO danhsachdongvat (id_danhmuc, tendv, cannang, anh) VALUES\n"
                 + "(?, ?,?, ?)";
@@ -86,7 +88,7 @@ public class danhsachdongvatDao {
             preparedStatement.setInt(1, dsdv.getIddm());
             preparedStatement.setString(2, dsdv.getTendv());
             preparedStatement.setFloat(3, dsdv.getCannang());
-            preparedStatement.setString(4,dsdv.getAnh());
+            preparedStatement.setString(4, dsdv.getAnh());
             int row = preparedStatement.executeUpdate();
             if (row > 0) {
                 System.out.println("Thêm Thành Công");
@@ -95,6 +97,7 @@ public class danhsachdongvatDao {
             System.out.println("Mã Lỗi:" + e);
         }
     }
+
     public void update(danhsachdongvat dsdv) {
         String sql = "UPDATE danhsachdongvat set id_danhmuc = ?,tendv = ?,cannang = ?, anh = ? where id = ?";
         try {
@@ -102,8 +105,8 @@ public class danhsachdongvatDao {
             preparedStatement.setInt(1, dsdv.getIddm());
             preparedStatement.setString(2, dsdv.getTendv());
             preparedStatement.setFloat(3, dsdv.getCannang());
-            preparedStatement.setString(4,dsdv.getAnh());
-            preparedStatement.setInt(5,dsdv.getId());
+            preparedStatement.setString(4, dsdv.getAnh());
+            preparedStatement.setInt(5, dsdv.getId());
             int row = preparedStatement.executeUpdate();
             if (row > 0) {
                 System.out.println("Sửa Thành Công");
@@ -112,17 +115,46 @@ public class danhsachdongvatDao {
             System.out.println("Mã Lỗi:" + e);
         }
     }
+
     public void delete(danhsachdongvat dsdv) {
         String sql = "Delete FROM danhsachdongvat where id = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, dsdv.getId());
             int row = preparedStatement.executeUpdate();
-            if(row > 0){
+            if (row > 0) {
                 System.out.println("Xoá Thành Công");
             }
         } catch (SQLException e) {
             System.out.println("Mã Lỗi:" + e);
         }
+    }
+
+    public List<danhsachdongvat> getAllDataByTenDv(String tenDv, String TenDm) {
+        List<danhsachdongvat> list = new ArrayList<>();
+        String sql = "Select danhsachdongvat.id,danhsachdongvat.id_danhmuc,danhmucdongvat.tendm,danhsachdongvat.tendv,danhsachdongvat.cannang,danhsachdongvat.anh from danhsachdongvat\n"
+                + "join danhmucdongvat\n"
+                + "on danhsachdongvat.id_danhmuc = danhmucdongvat.id where danhmucdongvat.tendm = ? and danhsachdongvat.tendv like ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(2, "%" + tenDv + "%");
+            preparedStatement.setString(1, TenDm);
+            preparedStatement.executeQuery();
+            resultSet = preparedStatement.getResultSet();
+            while (resultSet.next()) {
+                danhsachdongvat dsdv = new danhsachdongvat(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("id_danhmuc"),
+                        resultSet.getString("tendm"),
+                        resultSet.getString("tendv"),
+                        resultSet.getFloat("cannang"),
+                        resultSet.getString("anh"));
+                list.add(dsdv);
+
+            }
+        } catch (SQLException e) {
+            System.out.println("Mã Lỗi:" + e);
+        }
+        return list;
     }
 }

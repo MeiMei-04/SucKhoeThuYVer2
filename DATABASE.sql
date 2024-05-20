@@ -55,6 +55,9 @@ SELECT * FROM danhmucdongvat
 Select danhsachdongvat.id,danhsachdongvat.id_danhmuc,danhmucdongvat.tendm,danhsachdongvat.tendv,danhsachdongvat.cannang,danhsachdongvat.anh from danhsachdongvat
 join danhmucdongvat
 on danhsachdongvat.id_danhmuc = danhmucdongvat.id
+Select danhsachdongvat.id,danhsachdongvat.id_danhmuc,danhmucdongvat.tendm,danhsachdongvat.tendv,danhsachdongvat.cannang,danhsachdongvat.anh from danhsachdongvat
+join danhmucdongvat
+on danhsachdongvat.id_danhmuc = danhmucdongvat.id where danhsachdongvat.tendv like '%Móng%'
 Select lichsutiemphong.id,lichsutiemphong.id_dv,danhsachdongvat.tendv,lichsutiemphong.thuocdasudung,lichsutiemphong.ngaytiem,lichsutiemphong.tinhtrangsaukhitiem,danhsachdongvat.anh from lichsutiemphong
 join danhsachdongvat
 on lichsutiemphong.id_dv = danhsachdongvat.id
@@ -65,3 +68,61 @@ join danhsachdongvat
 on lichsukhambenh.id_dv = danhsachdongvat.id
 join danhmucdongvat
 on danhsachdongvat.id_danhmuc = danhmucdongvat.id where danhmucdongvat.tendm = N'Lợn'
+-- Stored procedure to get the medical history statistics by month
+-- Stored procedure to get the medical history statistics by month
+Go;
+CREATE PROCEDURE ThongKeLichSuKhamBenhTheoThang
+    @Month INT,
+    @Year INT
+AS
+BEGIN
+    SELECT 
+        lkb.id,
+        lkb.id_dv,
+        dsv.tendv,
+        lkb.loaibenh,
+        lkb.ngaykhambenh,
+        lkb.tinhtrangbenh,
+        dsv.anh 
+    FROM 
+        lichsukhambenh lkb
+    JOIN 
+        danhsachdongvat dsv ON lkb.id_dv = dsv.id
+    JOIN 
+        danhmucdongvat dmdv ON dsv.id_danhmuc = dmdv.id
+    WHERE 
+        MONTH(lkb.ngaykhambenh) = @Month AND YEAR(lkb.ngaykhambenh) = @Year
+    ORDER BY 
+        lkb.ngaykhambenh;
+END;
+GO
+
+-- Stored procedure to get the vaccination history statistics by month
+CREATE PROCEDURE ThongKeLichSuTiemPhongTheoThang
+    @Month INT,
+    @Year INT
+AS
+BEGIN
+    SELECT 
+        lt.id,
+        lt.id_dv,
+        dsv.tendv,
+        lt.thuocdasudung,
+        lt.ngaytiem,
+        lt.tinhtrangsaukhitiem,
+        dsv.anh 
+    FROM 
+        lichsutiemphong lt
+    JOIN 
+        danhsachdongvat dsv ON lt.id_dv = dsv.id
+    JOIN 
+        danhmucdongvat dmdv ON dsv.id_danhmuc = dmdv.id
+    WHERE 
+        MONTH(lt.ngaytiem) = @Month AND YEAR(lt.ngaytiem) = @Year
+    ORDER BY 
+        lt.ngaytiem;
+END;
+GO
+
+EXEC ThongKeLichSuKhamBenhTheoThang @Month = 1, @Year = 2023;
+EXEC ThongKeLichSuTiemPhongTheoThang @Month = 1, @Year = 2023;

@@ -198,6 +198,7 @@ public class dsdvView extends javax.swing.JDialog {
         btnSua = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         btnMoi = new javax.swing.JButton();
+        btnTimKiem4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -296,6 +297,15 @@ public class dsdvView extends javax.swing.JDialog {
             }
         });
 
+        btnTimKiem4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnTimKiem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Search.png"))); // NOI18N
+        btnTimKiem4.setText("Tìm Kiếm");
+        btnTimKiem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiem4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -328,7 +338,8 @@ public class dsdvView extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(btnXoa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnMoi)))
+                        .addComponent(btnMoi))
+                    .addComponent(btnTimKiem4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -364,7 +375,9 @@ public class dsdvView extends javax.swing.JDialog {
                             .addComponent(btnSua)
                             .addComponent(btnXoa)
                             .addComponent(btnMoi))
-                        .addGap(0, 97, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnTimKiem4)
+                        .addGap(0, 48, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -425,6 +438,31 @@ public class dsdvView extends javax.swing.JDialog {
         fillTableDsdv();
     }//GEN-LAST:event_btnXoaActionPerformed
 
+    private void btnTimKiem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiem4ActionPerformed
+        // TODO add your handling code here:
+        String tenDv = txtTenDv.getText();
+        String tenDm = cbDanhMuc.getSelectedItem().toString();
+        if (!txtTenDv.equals("")) {
+            DefaultTableModel defaultTableModel = (DefaultTableModel) tbldsdv.getModel();
+            defaultTableModel.setRowCount(0);
+            Listdsdv = dsDao.getAllDataByTenDv(tenDv,tenDm);
+            if (Listdsdv.isEmpty()) {
+                System.out.println("Danh Sách Trống");
+                return;
+            }
+            for (danhsachdongvat object : Listdsdv) {
+                Object[] row = {
+                    object.getId(),
+                    object.getTendm(),
+                    object.getTendv(),
+                    object.getCannang(),
+                    object.getAnh()
+                };
+                defaultTableModel.addRow(row);
+            }
+        }
+    }//GEN-LAST:event_btnTimKiem4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -477,6 +515,11 @@ public class dsdvView extends javax.swing.JDialog {
     private javax.swing.JButton btnMoi;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
+    private javax.swing.JButton btnTimKiem;
+    private javax.swing.JButton btnTimKiem1;
+    private javax.swing.JButton btnTimKiem2;
+    private javax.swing.JButton btnTimKiem3;
+    private javax.swing.JButton btnTimKiem4;
     private javax.swing.JButton btnXoa;
     private javax.swing.JComboBox<String> cbDanhMuc;
     private javax.swing.JLabel jLabel1;
