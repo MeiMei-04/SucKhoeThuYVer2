@@ -5,6 +5,7 @@
 package views;
 
 import java.awt.Image;
+import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -92,6 +93,12 @@ public class mainView extends javax.swing.JFrame {
         ls.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lsActionPerformed(evt);
+            }
+        });
+
+        lbllogo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbllogoMouseClicked(evt);
             }
         });
 
@@ -187,6 +194,14 @@ public class mainView extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_btnWebActionPerformed
+
+    private void lbllogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoMouseClicked
+        // TODO add your handling code here:
+        try {
+            uliti.webService.openWebpage(new URL("https://userdhieu.id.vn/"));// trang web cá nhân nà
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_lbllogoMouseClicked
 
     /**
      * @param args the command line arguments
