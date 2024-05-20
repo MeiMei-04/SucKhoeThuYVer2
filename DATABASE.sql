@@ -57,7 +57,7 @@ join danhmucdongvat
 on danhsachdongvat.id_danhmuc = danhmucdongvat.id
 Select danhsachdongvat.id,danhsachdongvat.id_danhmuc,danhmucdongvat.tendm,danhsachdongvat.tendv,danhsachdongvat.cannang,danhsachdongvat.anh from danhsachdongvat
 join danhmucdongvat
-on danhsachdongvat.id_danhmuc = danhmucdongvat.id where danhsachdongvat.tendv like '%Móng%'
+on danhsachdongvat.id_danhmuc = danhmucdongvat.id where danhsachdongvat.tendv like '%Vàng%'
 Select lichsutiemphong.id,lichsutiemphong.id_dv,danhsachdongvat.tendv,lichsutiemphong.thuocdasudung,lichsutiemphong.ngaytiem,lichsutiemphong.tinhtrangsaukhitiem,danhsachdongvat.anh from lichsutiemphong
 join danhsachdongvat
 on lichsutiemphong.id_dv = danhsachdongvat.id
