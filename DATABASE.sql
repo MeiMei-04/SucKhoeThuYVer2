@@ -123,6 +123,24 @@ BEGIN
         lt.ngaytiem;
 END;
 GO
-
+CREATE PROCEDURE ThongKeMuiTiemDongVatTheoThang
+	@ID int,
+    @Month INT,
+    @Year INT
+AS
+BEGIN
+    SELECT 
+        COUNT(*) as soluong
+    FROM 
+        lichsutiemphong lt
+    JOIN 
+        danhsachdongvat dsv ON lt.id_dv = dsv.id
+    JOIN 
+        danhmucdongvat dmdv ON dsv.id_danhmuc = dmdv.id
+    WHERE 
+        MONTH(lt.ngaytiem) = @Month AND YEAR(lt.ngaytiem) = @Year AND lt.id_dv = @id
+END;
+GO
 EXEC ThongKeLichSuKhamBenhTheoThang @Month = 1, @Year = 2023;
 EXEC ThongKeLichSuTiemPhongTheoThang @Month = 1, @Year = 2023;
+EXEC ThongKeMuiTiemDongVatTheoThang @Month = 1, @Year = 2023, @id = 1

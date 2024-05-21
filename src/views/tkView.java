@@ -4,9 +4,13 @@
  */
 package views;
 
+import dao.danhsachdongvatDao;
+import dao.lichsukhambenhDao;
 import dao.thongKeDao;
+import entity.danhsachdongvat;
 import entity.lichsukhambenh;
 import entity.lichsutiemphong;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +23,8 @@ import javax.swing.table.DefaultTableModel;
 public class tkView extends javax.swing.JDialog {
 
     thongKeDao tkDao;
-
+    danhsachdongvatDao dsdao;
+    private List<danhsachdongvat> Listdsdv = new ArrayList<>();
     /**
      * Creates new form tkView
      */
@@ -29,10 +34,25 @@ public class tkView extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         setTitle("Thống Kê");
         tkDao = new thongKeDao();
+        dsdao = new danhsachdongvatDao();
         fillCbbThang();
         fillCbbNam();
+        cbbTenDv();
     }
-
+    private void cbbTenDv(){
+        cbbDongVat.removeAllItems();
+        Listdsdv = dsdao.getAllData();
+        for (danhsachdongvat object : Listdsdv) {
+            cbbDongVat.addItem(object.getTendv());
+        }
+        cbbDongVat.setSelectedIndex(0);
+    }
+    private int getIdDv(){
+        int id = -1;
+        Listdsdv = dsdao.getAllData();
+        int index = cbbDongVat.getSelectedIndex();
+        return Listdsdv.get(index).getId();
+    }
     public void fillCbbThang() {
         cbbThang.removeAllItems();
         for (int i = 1; i < 13; i++) {
@@ -67,6 +87,10 @@ public class tkView extends javax.swing.JDialog {
         btnTimKiem4 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl = new javax.swing.JTable();
+        cbbDongVat = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        txtMuiTiem = new javax.swing.JLabel();
+        btnCheck = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -107,6 +131,23 @@ public class tkView extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tbl);
 
+        cbbDongVat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lịch Sử Khám Bệnh", "Lịch Sử Tiêm Phòng" }));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel4.setText("Tên Động Vật");
+
+        txtMuiTiem.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txtMuiTiem.setText("Só Mũi Đã Tiêm: ");
+
+        btnCheck.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/check.png"))); // NOI18N
+        btnCheck.setText("Kiểm tra");
+        btnCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,20 +159,34 @@ public class tkView extends javax.swing.JDialog {
                         .addComponent(jScrollPane1)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbbLichSu, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbbLichSu, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbbDongVat, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(41, 41, 41)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbbThang, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbbNam, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
-                        .addComponent(btnTimKiem4)
-                        .addGap(85, 85, 85))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbbThang, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(42, 42, 42)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbbNam, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                                .addComponent(btnTimKiem4)
+                                .addGap(85, 85, 85))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCheck)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtMuiTiem)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,7 +202,14 @@ public class tkView extends javax.swing.JDialog {
                         .addComponent(cbbNam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnTimKiem4))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(cbbDongVat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtMuiTiem)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -202,6 +264,14 @@ public class tkView extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnTimKiem4ActionPerformed
 
+    private void btnCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckActionPerformed
+        // TODO add your handling code here:
+        int thang = Integer.parseInt(cbbThang.getSelectedItem().toString());
+        int nam = Integer.parseInt(cbbNam.getSelectedItem().toString());
+        int id = getIdDv();
+        txtMuiTiem.setText("Số Mũi Đã Tiêm: "+String.valueOf(tkDao.ThongKeMuiTiemDongVatTheoThang(thang,nam,id)));
+    }//GEN-LAST:event_btnCheckActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -250,14 +320,18 @@ public class tkView extends javax.swing.JDialog {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCheck;
     private javax.swing.JButton btnTimKiem4;
+    private javax.swing.JComboBox<String> cbbDongVat;
     private javax.swing.JComboBox<String> cbbLichSu;
     private javax.swing.JComboBox<String> cbbNam;
     private javax.swing.JComboBox<String> cbbThang;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbl;
+    private javax.swing.JLabel txtMuiTiem;
     // End of variables declaration//GEN-END:variables
 }

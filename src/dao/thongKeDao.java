@@ -77,4 +77,22 @@ public class thongKeDao {
         }
         return list;
     }
+    public int ThongKeMuiTiemDongVatTheoThang(int thang,int nam,int id) {
+        int sl = 0;
+        String sql = "EXEC ThongKeMuiTiemDongVatTheoThang @Month = ?, @Year = ?, @id = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, thang);
+            preparedStatement.setInt(2, nam);
+            preparedStatement.setInt(3, id);
+            preparedStatement.executeQuery();
+            resultSet = preparedStatement.getResultSet();
+            if (resultSet.next()) {
+                sl = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("Mã Lỗi:" + e);
+        }
+        return sl;
+    }
 }
