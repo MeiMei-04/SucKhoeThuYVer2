@@ -211,7 +211,7 @@ public class mainView extends javax.swing.JFrame {
     private void lbllogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbllogoMouseClicked
         // TODO add your handling code here:
         try {
-            uliti.webService.openWebpage(new URL("https://userdhieu.id.vn/"));// trang web cá nhân nà
+//            uliti.webService.openWebpage(new URL("https://userdhieu.id.vn/"));// trang web cá nhân nà
         } catch (Exception e) {
         }
     }//GEN-LAST:event_lbllogoMouseClicked
