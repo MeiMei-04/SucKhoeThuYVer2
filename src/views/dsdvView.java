@@ -66,14 +66,14 @@ public class dsdvView extends javax.swing.JDialog {
         return Listdmdv.get(index).getId();
     }
 
-    private void setForm() {
-        int row = tbldsdv.getSelectedRow();
+    private void setForm(int row) {
         if (row > -1) {
             txtID.setText(tbldsdv.getValueAt(row, 0).toString());
             txtTenDv.setText(tbldsdv.getValueAt(row, 2).toString());
             txtCanNang.setText(tbldsdv.getValueAt(row, 3).toString());
             cbDanhMuc.setSelectedItem(tbldsdv.getValueAt(row, 1).toString());
             displayImage(pathimg + tbldsdv.getValueAt(row, 4).toString());
+            nameimg = tbldsdv.getValueAt(row, 4).toString();
         }
     }
 
@@ -199,6 +199,7 @@ public class dsdvView extends javax.swing.JDialog {
         btnXoa = new javax.swing.JButton();
         btnMoi = new javax.swing.JButton();
         btnTimKiem4 = new javax.swing.JButton();
+        btnqrcode = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -306,6 +307,15 @@ public class dsdvView extends javax.swing.JDialog {
             }
         });
 
+        btnqrcode.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnqrcode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/qrcode.png"))); // NOI18N
+        btnqrcode.setText("QR Quét");
+        btnqrcode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnqrcodeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -332,14 +342,17 @@ public class dsdvView extends javax.swing.JDialog {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnChonAnh)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnThem)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSua)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnThem)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSua))
+                            .addComponent(btnTimKiem4))
                         .addGap(18, 18, 18)
                         .addComponent(btnXoa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnMoi))
-                    .addComponent(btnTimKiem4))
+                    .addComponent(btnqrcode))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -377,7 +390,9 @@ public class dsdvView extends javax.swing.JDialog {
                             .addComponent(btnMoi))
                         .addGap(18, 18, 18)
                         .addComponent(btnTimKiem4)
-                        .addGap(0, 48, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnqrcode)
+                        .addGap(0, 5, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -405,7 +420,8 @@ public class dsdvView extends javax.swing.JDialog {
 
     private void tbldsdvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbldsdvMouseClicked
         // TODO add your handling code here:
-        setForm();
+        int row = tbldsdv.getSelectedRow();
+        setForm(row);
     }//GEN-LAST:event_tbldsdvMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
@@ -445,7 +461,7 @@ public class dsdvView extends javax.swing.JDialog {
         if (!txtTenDv.equals("")) {
             DefaultTableModel defaultTableModel = (DefaultTableModel) tbldsdv.getModel();
             defaultTableModel.setRowCount(0);
-            Listdsdv = dsDao.getAllDataByTenDv(tenDv,tenDm);
+            Listdsdv = dsDao.getAllDataByTenDv(tenDv, tenDm);
             if (Listdsdv.isEmpty()) {
                 System.out.println("Danh Sách Trống");
                 return;
@@ -462,6 +478,45 @@ public class dsdvView extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnTimKiem4ActionPerformed
+
+    private void btnqrcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnqrcodeActionPerformed
+        // TODO add your handling code here:
+        String str = null;
+        readQr qr = new readQr(null, true);
+        qr.setVisible(true);
+        if (!qr.isVisible()) {
+            str = qr.getStr();
+        }
+        if (str != null) {
+            DefaultTableModel defaultTableModel = (DefaultTableModel) tbldsdv.getModel();
+            defaultTableModel.setRowCount(0);
+            try {
+                Listdsdv = dsDao.getAllDataByIDDv(Integer.parseInt(str));
+                if (Listdsdv.isEmpty()) {
+                    uliti.Dialog.fail("Tìm");
+                    System.out.println("Danh Sách Trống");
+                    return;
+                }
+                for (danhsachdongvat object : Listdsdv) {
+                    Object[] row = {
+                        object.getId(),
+                        object.getTendm(),
+                        object.getTendv(),
+                        object.getCannang(),
+                        object.getAnh()
+                    };
+                    defaultTableModel.addRow(row);
+                }
+                setForm(0);
+            } catch (Exception e) {
+//                e.printStackTrace();
+                uliti.Dialog.fail("Tìm");
+            }
+
+        } else {
+            uliti.Dialog.fail("Tìm");
+        }
+    }//GEN-LAST:event_btnqrcodeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -515,12 +570,9 @@ public class dsdvView extends javax.swing.JDialog {
     private javax.swing.JButton btnMoi;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
-    private javax.swing.JButton btnTimKiem;
-    private javax.swing.JButton btnTimKiem1;
-    private javax.swing.JButton btnTimKiem2;
-    private javax.swing.JButton btnTimKiem3;
     private javax.swing.JButton btnTimKiem4;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnqrcode;
     private javax.swing.JComboBox<String> cbDanhMuc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

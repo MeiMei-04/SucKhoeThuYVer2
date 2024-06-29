@@ -157,4 +157,30 @@ public class danhsachdongvatDao {
         }
         return list;
     }
+    public List<danhsachdongvat> getAllDataByIDDv(int id) {
+        List<danhsachdongvat> list = new ArrayList<>();
+        String sql = "Select danhsachdongvat.id,danhsachdongvat.id_danhmuc,danhmucdongvat.tendm,danhsachdongvat.tendv,danhsachdongvat.cannang,danhsachdongvat.anh from danhsachdongvat\n"
+                + "join danhmucdongvat\n"
+                + "on danhsachdongvat.id_danhmuc = danhmucdongvat.id where danhsachdongvat.id = ? ";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeQuery();
+            resultSet = preparedStatement.getResultSet();
+            while (resultSet.next()) {
+                danhsachdongvat dsdv = new danhsachdongvat(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("id_danhmuc"),
+                        resultSet.getString("tendm"),
+                        resultSet.getString("tendv"),
+                        resultSet.getFloat("cannang"),
+                        resultSet.getString("anh"));
+                list.add(dsdv);
+
+            }
+        } catch (SQLException e) {
+            System.out.println("Mã Lỗi:" + e);
+        }
+        return list;
+    }
 }
