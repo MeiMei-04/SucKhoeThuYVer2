@@ -144,3 +144,5 @@ GO
 EXEC ThongKeLichSuKhamBenhTheoThang @Month = 1, @Year = 2023;
 EXEC ThongKeLichSuTiemPhongTheoThang @Month = 1, @Year = 2023;
 EXEC ThongKeMuiTiemDongVatTheoThang @Month = 1, @Year = 2023, @id = 1
+Select lichsutiemphong.id,lichsutiemphong.id_dv,danhsachdongvat.tendv,lichsutiemphong.thuocdasudung,lichsutiemphong.ngaytiem,lichsutiemphong.tinhtrangsaukhitiem,danhsachdongvat.anh from lichsutiemphong join danhsachdongvat on lichsutiemphong.id_dv = danhsachdongvat.id where lichsutiemphong.id_dv = 1
+select danhmucdongvat.tendm from danhsachdongvat join danhmucdongvat on danhmucdongvat.id = danhsachdongvat.id_danhmuc where danhsachdongvat.id = 1

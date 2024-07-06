@@ -56,7 +56,34 @@ public class lichsukhambenhDao {
         }
         return list;
     }
+    public List<lichsukhambenh> getAllDataById(int iddv) {
+        List<lichsukhambenh> list = new ArrayList<>();
+        String sql = "Select lichsukhambenh.id,lichsukhambenh.id_dv,danhsachdongvat.tendv,lichsukhambenh.loaibenh,lichsukhambenh.ngaykhambenh,lichsukhambenh.tinhtrangbenh, danhsachdongvat.anh from lichsukhambenh\n"
+                + "join danhsachdongvat\n"
+                + "on lichsukhambenh.id_dv = danhsachdongvat.id where lichsukhambenh.id_dv = ? ";
+        System.out.println(sql);
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, iddv);
+            preparedStatement.executeQuery();
+            resultSet = preparedStatement.getResultSet();
+            while (resultSet.next()) {
+                lichsukhambenh lsb = new lichsukhambenh(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("id_dv"),
+                        resultSet.getString("tendv"),
+                        resultSet.getString("loaibenh"),
+                        resultSet.getDate("ngaykhambenh"),
+                        resultSet.getString("tinhtrangbenh"),
+                        resultSet.getString("anh"));
+                list.add(lsb);
 
+            }
+        } catch (SQLException e) {
+            System.out.println("Mã Lỗi:" + e);
+        }
+        return list;
+    }
     public void create(lichsukhambenh lsb) {
         String sql = "INSERT INTO lichsukhambenh (id_dv, loaibenh, ngaykhambenh, tinhtrangbenh) VALUES\n"
                 + "(?, ?, ?, ?)";

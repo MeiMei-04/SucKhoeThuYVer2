@@ -31,13 +31,15 @@ public class pnllsbenh extends javax.swing.JPanel {
     lichsukhambenhDao lsbdao;
     private List<danhsachdongvat> Listdsdv = new ArrayList<>();
     String tendm = null;
+    int idDv = -1;
     private List<lichsukhambenh> Listlsb = new ArrayList<>();
     /**
      * Creates new form pnllsbenh
      */
-    public pnllsbenh(String tendm) throws Exception {
+    public pnllsbenh(String tendm,int iddv) throws Exception {
         initComponents();
         this.tendm = tendm;
+        this.idDv = iddv;
         dsdao = new danhsachdongvatDao();
         lsbdao = new lichsukhambenhDao();
         fillTable();
@@ -45,6 +47,9 @@ public class pnllsbenh extends javax.swing.JPanel {
     }
     private void cbbTenDv(){
         cbbTenDv.removeAllItems();
+        if(tendm == null){
+            tendm = dsdao.getDmById(idDv);
+        }
         Listdsdv = dsdao.getAllDataByTenDm(tendm);
         for (danhsachdongvat object : Listdsdv) {
             cbbTenDv.addItem(object.getTendv());
@@ -68,7 +73,11 @@ public class pnllsbenh extends javax.swing.JPanel {
     private void fillTable(){
         DefaultTableModel defaultTableModel = (DefaultTableModel) tblsb.getModel();
         defaultTableModel.setRowCount(0);
-        Listlsb = lsbdao.getAllData(tendm);
+        if (idDv == -1) {
+            Listlsb = lsbdao.getAllData(tendm);
+        }else{
+            Listlsb = lsbdao.getAllDataById(idDv);
+        }
         if(Listlsb.isEmpty()){
             System.out.println("Danh sách Trống");
             return;

@@ -157,6 +157,7 @@ public class danhsachdongvatDao {
         }
         return list;
     }
+
     public List<danhsachdongvat> getAllDataByIDDv(int id) {
         List<danhsachdongvat> list = new ArrayList<>();
         String sql = "Select danhsachdongvat.id,danhsachdongvat.id_danhmuc,danhmucdongvat.tendm,danhsachdongvat.tendv,danhsachdongvat.cannang,danhsachdongvat.anh from danhsachdongvat\n"
@@ -182,5 +183,23 @@ public class danhsachdongvatDao {
             System.out.println("Mã Lỗi:" + e);
         }
         return list;
+    }
+
+    public String getDmById(int id) {
+        String tendm = null;
+        String sql = "select danhmucdongvat.tendm from danhsachdongvat join danhmucdongvat on danhmucdongvat.id = danhsachdongvat.id_danhmuc where danhsachdongvat.id = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeQuery();
+            resultSet = preparedStatement.getResultSet();
+            while (resultSet.next()) {
+                tendm = resultSet.getString("tendm");
+            }
+            System.out.println("ten dm" + tendm);
+        } catch (SQLException e) {
+            System.out.println("Mã Lỗi:" + e);
+        }
+        return tendm;
     }
 }

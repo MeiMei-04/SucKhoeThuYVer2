@@ -25,6 +25,7 @@ import uliti.DateUliti;
  * @author Hieu
  */
 public class pnllstiemphong extends javax.swing.JPanel {
+
     danhsachdongvatDao dsdao;
     lichsutiemphongDao lstdao;
     private List<danhsachdongvat> Listdsdv = new ArrayList<>();
@@ -32,30 +33,38 @@ public class pnllstiemphong extends javax.swing.JPanel {
      * Creates new form pnllstiemphong
      */
     String tendm = null;
-    
+    int idDv = -1;
     private List<lichsutiemphong> listls = new ArrayList<>();
-    public pnllstiemphong(String tendm) throws Exception {
+
+    public pnllstiemphong(String tendm, int iddv) throws Exception {
         initComponents();
         this.tendm = tendm;
+        this.idDv = iddv;
         dsdao = new danhsachdongvatDao();
         lstdao = new lichsutiemphongDao();
         fillTable();
         cbbTenDv();
     }
-    private void cbbTenDv(){
+
+    private void cbbTenDv() {
         cbbTenDv.removeAllItems();
+        if(tendm == null){
+            tendm = dsdao.getDmById(idDv);
+        }
         Listdsdv = dsdao.getAllDataByTenDm(tendm);
         for (danhsachdongvat object : Listdsdv) {
             cbbTenDv.addItem(object.getTendv());
         }
         cbbTenDv.setSelectedIndex(0);
     }
-    private int getIdDv(){
+
+    private int getIdDv() {
         int id = -1;
         int index = cbbTenDv.getSelectedIndex();
         Listdsdv = dsdao.getAllDataByTenDm(tendm);
         return Listdsdv.get(index).getId();
     }
+
     private void displayImage(String imagePath) {
         System.out.println(imagePath);
         ImageIcon imageIcon = new ImageIcon(imagePath);
@@ -64,49 +73,57 @@ public class pnllstiemphong extends javax.swing.JPanel {
         imageIcon = new ImageIcon(scaledImage);
         lblanh.setIcon(imageIcon);
     }
-    private void setForm() throws ParseException{
+
+    private void setForm() throws ParseException {
         int row = -1;
         row = tblLstiem.getSelectedRow();
-        if(row>-1){
+        if (row > -1) {
             txtID.setText(tblLstiem.getValueAt(row, 0).toString());
             txtNgayTiem.setDate(DateUliti.stringToDate(tblLstiem.getValueAt(row, 3).toString(), "yyyy-MM-dd"));
             txtThuocsd.setText(tblLstiem.getValueAt(row, 2).toString());
             txtTinhTrang.setText(tblLstiem.getValueAt(row, 4).toString());
             String imgname = tblLstiem.getValueAt(row, 5).toString();
-            displayImage("src/img/"+imgname);
+            displayImage("src/img/" + imgname);
             cbbTenDv.setSelectedItem(tblLstiem.getValueAt(row, 1).toString());
         }
     }
-    private lichsutiemphong getForm(){
+
+    private lichsutiemphong getForm() {
         String idstr = txtID.getText();
         int id = -1;
-        if(!idstr.equals("")){
+        if (!idstr.equals("")) {
             id = Integer.parseInt(idstr);
         }
         int iddv = getIdDv();
         String thuocsd = txtThuocsd.getText();
-        if(thuocsd.equals("")){
+        if (thuocsd.equals("")) {
             JOptionPane.showMessageDialog(this, "Thuốc Sử Dụng Không Được Để Trống", "Thông Báo", JOptionPane.WARNING_MESSAGE);
             return null;
         }
         Date ngaytiem = txtNgayTiem.getDate();
-        if(ngaytiem == null || ngaytiem.equals("")){
+        if (ngaytiem == null || ngaytiem.equals("")) {
             JOptionPane.showMessageDialog(this, "Ngày Tiêm Không Được Để Trống", "Thông Báo", JOptionPane.WARNING_MESSAGE);
             return null;
         }
         String tinhtrang = txtTinhTrang.getText();
-        if(tinhtrang.equals("")){
+        if (tinhtrang.equals("")) {
             JOptionPane.showMessageDialog(this, "Tình Trạng Sau Khi Tiêm Không Được Để Trống", "Thông Báo", JOptionPane.WARNING_MESSAGE);
             return null;
         }
         lichsutiemphong lst = new lichsutiemphong(id, iddv, thuocsd, ngaytiem, tinhtrang);
         return lst;
     }
-    private void fillTable(){
+
+    private void fillTable() {
         DefaultTableModel defaultTableModel = (DefaultTableModel) tblLstiem.getModel();
         defaultTableModel.setRowCount(0);
-        listls = lstdao.getAllData(tendm);
-        if(listls.isEmpty()){
+        if (idDv == -1) {
+            listls = lstdao.getAllData(tendm);
+        }else{
+            listls = lstdao.getAllDataById(idDv);
+        }
+        if (listls.isEmpty()) {
+            uliti.Dialog.fail("Tìm");
             System.out.println("Danh sách Trống");
             return;
         }
@@ -122,6 +139,7 @@ public class pnllstiemphong extends javax.swing.JPanel {
             defaultTableModel.addRow(row);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -331,7 +349,7 @@ public class pnllstiemphong extends javax.swing.JPanel {
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
         lichsutiemphong lst = getForm();
-        if(lst==null){
+        if (lst == null) {
             return;
         }
         lstdao.create(lst);
@@ -341,7 +359,7 @@ public class pnllstiemphong extends javax.swing.JPanel {
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
         lichsutiemphong lst = getForm();
-        if(lst==null){
+        if (lst == null) {
             return;
         }
         lstdao.update(lst);
@@ -351,7 +369,7 @@ public class pnllstiemphong extends javax.swing.JPanel {
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
         lichsutiemphong lst = getForm();
-        if(lst==null){
+        if (lst == null) {
             return;
         }
         lstdao.delete(lst);

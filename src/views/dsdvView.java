@@ -4,6 +4,7 @@
  */
 package views;
 
+import com.google.zxing.WriterException;
 import dao.danhmucdongvatDao;
 import dao.danhsachdongvatDao;
 import entity.danhmucdongvat;
@@ -200,6 +201,7 @@ public class dsdvView extends javax.swing.JDialog {
         btnMoi = new javax.swing.JButton();
         btnTimKiem4 = new javax.swing.JButton();
         btnqrcode = new javax.swing.JButton();
+        btnqrcode1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -316,6 +318,15 @@ public class dsdvView extends javax.swing.JDialog {
             }
         });
 
+        btnqrcode1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnqrcode1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/qrcode.png"))); // NOI18N
+        btnqrcode1.setText("GET QR");
+        btnqrcode1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnqrcode1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -340,19 +351,25 @@ public class dsdvView extends javax.swing.JDialog {
                             .addComponent(txtTenDv)
                             .addComponent(txtCanNang)))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnChonAnh)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnChonAnh)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnThem)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnThem)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnSua))
+                                    .addComponent(btnTimKiem4))
                                 .addGap(18, 18, 18)
-                                .addComponent(btnSua))
-                            .addComponent(btnTimKiem4))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnXoa)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnMoi))
-                    .addComponent(btnqrcode))
+                                .addComponent(btnXoa)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnMoi))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnqrcode)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnqrcode1)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -391,7 +408,9 @@ public class dsdvView extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(btnTimKiem4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnqrcode)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnqrcode)
+                            .addComponent(btnqrcode1))
                         .addGap(0, 5, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
@@ -518,6 +537,30 @@ public class dsdvView extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnqrcodeActionPerformed
 
+    private void btnqrcode1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnqrcode1ActionPerformed
+        // TODO add your handling code here:
+        boolean flag = true;
+        StringBuilder str = new StringBuilder();
+        Listdsdv = dsDao.getAllData();
+        if (Listdsdv.isEmpty()) {
+            System.out.println("Danh Sách Trống");
+            return;
+        }
+        for (danhsachdongvat object : Listdsdv) {
+            str.append(object.getTendm()).append("-").append(object.getTendv()).append(".png");
+            try {
+                uliti.createQr.generateQRCodeImage(String.valueOf(object.getId()), str.toString());
+            } catch (Exception e) {
+                flag = false;
+//                e.printStackTrace();
+            }
+            str = new StringBuilder();
+        }
+        if (flag) {
+            uliti.Dialog.pass("QR CREATE");
+        }
+    }//GEN-LAST:event_btnqrcode1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -573,6 +616,7 @@ public class dsdvView extends javax.swing.JDialog {
     private javax.swing.JButton btnTimKiem4;
     private javax.swing.JButton btnXoa;
     private javax.swing.JButton btnqrcode;
+    private javax.swing.JButton btnqrcode1;
     private javax.swing.JComboBox<String> cbDanhMuc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -13,17 +13,20 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Hieu
  */
 public class lichsudv extends javax.swing.JDialog {
+
     /**
      * Creates new form lichsudv
      */
     danhmucdongvatDao dmDao;
     private List<danhmucdongvat> Listdmdv = new ArrayList<>();
+
     public lichsudv(java.awt.Frame parent, boolean modal) throws Exception {
         super(parent, modal);
         initComponents();
@@ -32,6 +35,7 @@ public class lichsudv extends javax.swing.JDialog {
         dmDao = new danhmucdongvatDao();
         fillcbbDanhMuc();
     }
+
     private void fillcbbDanhMuc() {
         Listdmdv = dmDao.getAllData();
         cbbDanhMuc.removeAllItems();
@@ -47,6 +51,7 @@ public class lichsudv extends javax.swing.JDialog {
         Listdmdv = dmDao.getAllData();
         return Listdmdv.get(index).getId();
     }
+
     private void showPanel(JPanel panel) {
         pnlBody.removeAll();
         pnlBody.add(panel, BorderLayout.CENTER);
@@ -69,6 +74,7 @@ public class lichsudv extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         cbbLichSu = new javax.swing.JComboBox<>();
         btnTimKiem = new javax.swing.JButton();
+        btnqrcode = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -97,6 +103,15 @@ public class lichsudv extends javax.swing.JDialog {
             }
         });
 
+        btnqrcode.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnqrcode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/qrcode.png"))); // NOI18N
+        btnqrcode.setText("QR Quét");
+        btnqrcode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnqrcodeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,6 +130,8 @@ public class lichsudv extends javax.swing.JDialog {
                             .addComponent(cbbLichSu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(btnTimKiem)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnqrcode)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -131,7 +148,9 @@ public class lichsudv extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(cbbLichSu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(btnTimKiem))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnTimKiem)
+                        .addComponent(btnqrcode)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(pnlBody, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -142,23 +161,54 @@ public class lichsudv extends javax.swing.JDialog {
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
         // TODO add your handling code here:
-         String tendm = cbbDanhMuc.getSelectedItem().toString();
-        if(cbbLichSu.getSelectedIndex()==0){
+        String tendm = cbbDanhMuc.getSelectedItem().toString();
+        if (cbbLichSu.getSelectedIndex() == 0) {
             try {
-                pnllstiemphong p = new pnllstiemphong(tendm);
+                pnllstiemphong p = new pnllstiemphong(tendm, -1);
                 showPanel(p);
             } catch (Exception ex) {
-                
+
             }
-        }else{
+        } else {
             try {
-                pnllsbenh p = new pnllsbenh(tendm);
+                pnllsbenh p = new pnllsbenh(tendm,-1);
                 showPanel(p);
             } catch (Exception ex) {
-                
+
             }
         }
     }//GEN-LAST:event_btnTimKiemActionPerformed
+
+    private void btnqrcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnqrcodeActionPerformed
+        // TODO add your handling code here
+        String str = null;
+        readQr qr = new readQr(null, true);
+        qr.setVisible(true);
+        if (!qr.isVisible()) {
+            str = qr.getStr();
+        }
+//        str = "1";
+        if (str != null) {
+            if (cbbLichSu.getSelectedIndex() == 0) {
+                try {
+//                    System.out.println(str);
+                    pnllstiemphong p = new pnllstiemphong(null, Integer.parseInt(str));
+                    showPanel(p);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                try {
+                    pnllsbenh p = new pnllsbenh(null,Integer.parseInt(str));
+                    showPanel(p);
+                } catch (Exception ex) {
+
+                }
+            }
+        } else {
+            uliti.Dialog.fail("Tìm");
+        }
+    }//GEN-LAST:event_btnqrcodeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -209,6 +259,7 @@ public class lichsudv extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTimKiem;
+    private javax.swing.JButton btnqrcode;
     private javax.swing.JComboBox<String> cbbDanhMuc;
     private javax.swing.JComboBox<String> cbbLichSu;
     private javax.swing.JLabel jLabel1;
